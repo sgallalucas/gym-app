@@ -36,4 +36,10 @@ public class StudentController {
         studentService.update(UUID.fromString(id), student);
         return ResponseEntity.noContent().build();
     }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> delete(@PathVariable String id) {
+        studentService.delete(UUID.fromString(id));
+        return ResponseEntity.noContent().build();
+    }
 }

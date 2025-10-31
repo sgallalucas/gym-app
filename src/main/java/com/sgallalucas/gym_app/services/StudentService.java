@@ -22,7 +22,7 @@ public class StudentService {
         return studentRepository.findById(id);
     }
 
-    public Student update(UUID id, Student updatedStudent) {
+    public void update(UUID id, Student updatedStudent) {
         Optional<Student> op = studentRepository.findById(id);
         Student student = op.get();
         student.setName(updatedStudent.getName());
@@ -30,6 +30,12 @@ public class StudentService {
         student.setBirthDate(updatedStudent.getBirthDate());
         student.setGenre(updatedStudent.getGenre());
 
-        return studentRepository.save(student);
+        studentRepository.save(student);
+    }
+
+    public void delete(UUID id) {
+        Optional<Student> op = studentRepository.findById(id);
+        Student student = op.get();
+        studentRepository.delete(student);
     }
 }
