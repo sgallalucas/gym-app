@@ -30,4 +30,10 @@ public class StudentController {
         Optional student = studentService.findById(UUID.fromString(id));
         return ResponseEntity.ok().body(student);
     }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Void> update(@PathVariable String id, @RequestBody Student student) {
+        studentService.update(UUID.fromString(id), student);
+        return ResponseEntity.noContent().build();
+    }
 }
