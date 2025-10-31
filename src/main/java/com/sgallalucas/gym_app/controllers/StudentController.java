@@ -8,6 +8,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
+import java.util.Optional;
+import java.util.UUID;
 
 @RequiredArgsConstructor
 @RestController
@@ -18,7 +20,14 @@ public class StudentController {
 
     @PostMapping
     public ResponseEntity<Student> create(@RequestBody Student student) {
-        URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/" + student.getId()).buildAndExpand().toUri();
-        return ResponseEntity.created(location).body(studentService.create(student));
+        Student s = studentService.create(student);
+        URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/" + s.getId()).buildAndExpand().toUri();
+        return ResponseEntity.created(location).body(s);
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<Optional<Student>> findById(@PathVariable String id) {
+        Optional student = studentService.findById(UUID.fromString(id));
+        return ResponseEntity.ok().body(student);
     }
 }
