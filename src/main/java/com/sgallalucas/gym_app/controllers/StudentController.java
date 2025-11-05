@@ -9,7 +9,9 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
+import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @RestController
@@ -44,5 +46,12 @@ public class StudentController {
     public ResponseEntity<Void> delete(@PathVariable String id) {
         studentService.delete(UUID.fromString(id));
         return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("/name")
+    public ResponseEntity<List<StudentDTO>> findByNameLike(@RequestParam(required = false) String name) {
+        List<Student> list = studentService.findByNameLike(name);
+        return ResponseEntity.ok().body(list.stream()
+                .map((student) -> studentService.convertToDTO(student)).collect(Collectors.toList()));
     }
 }
