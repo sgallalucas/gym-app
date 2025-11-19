@@ -1,8 +1,9 @@
 package com.sgallalucas.gym_app.controllers;
 
 import com.sgallalucas.gym_app.model.Student;
-import com.sgallalucas.gym_app.model.dtos.StudentDTO;
+import com.sgallalucas.gym_app.controllers.dtos.StudentDTO;
 import com.sgallalucas.gym_app.services.StudentService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -21,7 +22,7 @@ public class StudentController {
     private final StudentService studentService;
 
     @PostMapping
-    public ResponseEntity<StudentDTO> create(@RequestBody StudentDTO dto) {
+    public ResponseEntity<StudentDTO> create(@RequestBody @Valid StudentDTO dto) {
         Student student = studentService.convertToEntity(dto);
         studentService.create(student);
         URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/" + student.getId()).buildAndExpand().toUri();
@@ -36,7 +37,7 @@ public class StudentController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Void> update(@PathVariable String id, @RequestBody StudentDTO dto) {
+    public ResponseEntity<Void> update(@PathVariable String id, @RequestBody @Valid StudentDTO dto) {
         Student student = studentService.convertToEntity(dto);
         studentService.update(UUID.fromString(id), student);
         return ResponseEntity.noContent().build();

@@ -1,7 +1,7 @@
 package com.sgallalucas.gym_app.services;
 
 import com.sgallalucas.gym_app.model.Student;
-import com.sgallalucas.gym_app.model.dtos.StudentDTO;
+import com.sgallalucas.gym_app.controllers.dtos.StudentDTO;
 import com.sgallalucas.gym_app.repositories.StudentRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
@@ -21,11 +21,13 @@ public class StudentService {
     }
 
     public Student findById(UUID id) {
-        return studentRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Student not found"));
+        return studentRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Student not found"));
     }
 
     public void update(UUID id, Student updatedStudent) {
-        Student student = studentRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Student not found"));
+        Student student = studentRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Student not found"));
 
         student.setName(updatedStudent.getName());
         student.setEmail(updatedStudent.getEmail());
@@ -36,7 +38,8 @@ public class StudentService {
     }
 
     public void delete(UUID id) {
-        Student student = studentRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Student not found"));
+        Student student = studentRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Student not found"));
         studentRepository.delete(student);
     }
 
