@@ -3,6 +3,7 @@ package com.sgallalucas.gym_app.services;
 import com.sgallalucas.gym_app.model.Student;
 import com.sgallalucas.gym_app.controllers.dtos.StudentDTO;
 import com.sgallalucas.gym_app.repositories.StudentRepository;
+import com.sgallalucas.gym_app.validators.StudentValidator;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -15,8 +16,10 @@ import java.util.UUID;
 public class StudentService {
 
     private final StudentRepository studentRepository;
+    private final StudentValidator studentValidator;
 
     public Student create(Student student) {
+        studentValidator.validation(student.getEmail());
         return studentRepository.save(student);
     }
 
@@ -26,6 +29,7 @@ public class StudentService {
     }
 
     public void update(UUID id, Student updatedStudent) {
+        studentValidator.validation(updatedStudent.getEmail());
         Student student = studentRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Student not found"));
 

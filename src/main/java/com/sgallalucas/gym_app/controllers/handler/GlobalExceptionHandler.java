@@ -2,6 +2,7 @@ package com.sgallalucas.gym_app.controllers.handler;
 
 import com.sgallalucas.gym_app.controllers.dtos.errors.ErrorResponseDetails;
 import com.sgallalucas.gym_app.controllers.dtos.errors.FieldErrorDetails;
+import com.sgallalucas.gym_app.exceptions.DuplicateRecordException;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -24,5 +25,11 @@ public class GlobalExceptionHandler {
                 .map((fe) -> new FieldErrorDetails(fe.getField(), fe.getDefaultMessage())).toList();
 
         return new ErrorResponseDetails(HttpStatus.UNPROCESSABLE_ENTITY.value(), "validation error", LocalDateTime.now(), details);
+    }
+
+    @ExceptionHandler
+    @ResponseStatus(HttpStatus.CONFLICT)
+    public ErrorResponseDetails handleDuplicateRecordException(DuplicateRecordException ex) {
+        return new ErrorResponseDetails(HttpStatus.CONFLICT.value(), ex.getMessage(), LocalDateTime.now(), List.of());
     }
 }
