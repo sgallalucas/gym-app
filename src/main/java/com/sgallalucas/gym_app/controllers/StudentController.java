@@ -1,5 +1,6 @@
 package com.sgallalucas.gym_app.controllers;
 
+import com.sgallalucas.gym_app.controllers.mappers.StudentMapper;
 import com.sgallalucas.gym_app.model.Student;
 import com.sgallalucas.gym_app.controllers.dtos.StudentDTO;
 import com.sgallalucas.gym_app.services.StudentService;
@@ -20,10 +21,11 @@ import java.util.stream.Collectors;
 public class StudentController {
 
     private final StudentService studentService;
+    private final StudentMapper mapper;
 
     @PostMapping
     public ResponseEntity<StudentDTO> create(@RequestBody @Valid StudentDTO dto) {
-        Student student = studentService.convertToEntity(dto);
+        Student student = mapper.toEntity(dto);
         studentService.create(student);
         URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/" + student.getId()).buildAndExpand().toUri();
         return ResponseEntity.created(location).build();
@@ -32,13 +34,13 @@ public class StudentController {
     @GetMapping("/{id}")
     public ResponseEntity<StudentDTO> findById(@PathVariable String id) {
         Student student = studentService.findById(UUID.fromString(id));
-        StudentDTO dto = studentService.convertToDTO(student);
+        StudentDTO dto = mapper.toDTO(student);
         return ResponseEntity.ok().body(dto);
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<Void> update(@PathVariable String id, @RequestBody @Valid StudentDTO dto) {
-        Student student = studentService.convertToEntity(dto);
+        Student student = mapper.toEntity(dto);
         studentService.update(UUID.fromString(id), student);
         return ResponseEntity.noContent().build();
     }
@@ -53,6 +55,6 @@ public class StudentController {
     public ResponseEntity<List<StudentDTO>> findByNameLike(@RequestParam(required = false) String name) {
         List<Student> list = studentService.findByNameLike(name);
         return ResponseEntity.ok().body(list.stream()
-                .map((student) -> studentService.convertToDTO(student)).collect(Collectors.toList()));
+                .map((student) -> mapper.toDTO(student)).collect(Collectors.toList()));
     }
 }

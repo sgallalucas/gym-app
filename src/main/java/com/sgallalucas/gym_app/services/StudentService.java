@@ -1,7 +1,6 @@
 package com.sgallalucas.gym_app.services;
 
 import com.sgallalucas.gym_app.model.Student;
-import com.sgallalucas.gym_app.controllers.dtos.StudentDTO;
 import com.sgallalucas.gym_app.repositories.StudentRepository;
 import com.sgallalucas.gym_app.validators.StudentValidator;
 import jakarta.persistence.EntityNotFoundException;
@@ -49,27 +48,5 @@ public class StudentService {
 
     public List<Student> findByNameLike(String name) {
         return studentRepository.findByNameContainingIgnoreCase(name);
-    }
-
-    public Student convertToEntity(StudentDTO dto) {
-        Student student = new Student();
-        student.setId(dto.id());
-        student.setName(dto.name());
-        student.setEmail(dto.email());
-        student.setBirthDate(dto.birthDate());
-        student.setGenre(dto.genre());
-
-        return student;
-    }
-
-    public StudentDTO convertToDTO(Student student) {
-        StudentDTO dto = new StudentDTO(
-                student.getId(),
-                student.getName(),
-                student.getEmail(),
-                student.getBirthDate(),
-                student.getGenre()
-        );
-        return dto;
     }
 }
