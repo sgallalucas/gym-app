@@ -65,7 +65,7 @@ public class StudentServiceTest {
     }
 
     @Test
-    @DisplayName("Salvar aluno duplicado")
+    @DisplayName("Salvar aluno com dados duplicados")
     void create_DuplicateStudent_ThrowsException() {
         doThrow(DuplicateRecordException.class).when(studentValidator).validation(student.getEmail());
 

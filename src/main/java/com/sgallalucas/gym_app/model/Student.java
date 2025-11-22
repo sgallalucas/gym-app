@@ -1,8 +1,11 @@
 package com.sgallalucas.gym_app.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.validator.constraints.UniqueElements;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -20,12 +23,23 @@ public class Student {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
+
+    @NotBlank
     private String name;
+
+    @NotBlank
+    @Column(unique = true)
     private String email;
+
+    @NotNull
     private LocalDate birthDate;
+
+    @NotBlank
     private String genre;
+
     @CreatedDate
     private Instant creationDate;
+
     @LastModifiedDate
     private Instant updateDate;
 
