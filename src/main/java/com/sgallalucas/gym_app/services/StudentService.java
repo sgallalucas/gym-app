@@ -23,14 +23,12 @@ public class StudentService {
     }
 
     public Student findById(UUID id) {
-        return studentRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Student not found"));
+        return studentRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Student not found"));
     }
 
     public void update(UUID id, Student updatedStudent) {
         studentValidator.validation(updatedStudent.getEmail());
-        Student student = studentRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Student not found"));
+        Student student = studentRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Student not found"));
 
         student.setName(updatedStudent.getName());
         student.setEmail(updatedStudent.getEmail());
@@ -41,8 +39,7 @@ public class StudentService {
     }
 
     public void delete(UUID id) {
-        Student student = studentRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Student not found"));
+        Student student = studentRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Student not found"));
         studentRepository.delete(student);
     }
 

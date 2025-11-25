@@ -7,13 +7,11 @@ import com.sgallalucas.gym_app.services.ProfessorService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/professors")
@@ -30,4 +28,11 @@ public class ProfessorController {
         URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/" + professor.getId()).buildAndExpand().toUri();
         return ResponseEntity.created(location).build();
     }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<ProfessorDTO> findById(@PathVariable String id) {
+        ProfessorDTO dto = mapper.toDTO(professorService.findById(UUID.fromString(id)));
+        return ResponseEntity.ok().body(dto);
+    }
+
 }
