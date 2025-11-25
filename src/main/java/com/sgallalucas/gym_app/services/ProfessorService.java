@@ -33,4 +33,9 @@ public class ProfessorService {
 
         professorRepository.save(professor);
     }
+
+    public void delete(UUID id) {
+        Professor professor = professorRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Professor not found"));
+        professorRepository.delete(professor);
+    }
 }

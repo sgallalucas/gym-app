@@ -36,9 +36,15 @@ public class ProfessorController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Void> update(@PathVariable String id, @RequestBody ProfessorDTO dto) {
+    public ResponseEntity<Void> update(@PathVariable String id, @RequestBody @Valid ProfessorDTO dto) {
         Professor professor = mapper.toEntity(dto);
         professorService.update(UUID.fromString(id), professor);
+        return ResponseEntity.noContent().build();
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> delete(@PathVariable String id) {
+        professorService.delete(UUID.fromString(id));
         return ResponseEntity.noContent().build();
     }
 
