@@ -1,8 +1,8 @@
 package com.sgallalucas.gym_app.controllers;
 
+import com.sgallalucas.gym_app.controllers.dtos.StudentDTO;
 import com.sgallalucas.gym_app.controllers.mappers.StudentMapper;
 import com.sgallalucas.gym_app.model.Student;
-import com.sgallalucas.gym_app.controllers.dtos.StudentDTO;
 import com.sgallalucas.gym_app.services.StudentService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -13,7 +13,6 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import java.net.URI;
 import java.util.List;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @RestController
@@ -54,7 +53,6 @@ public class StudentController {
     @GetMapping("/name")
     public ResponseEntity<List<StudentDTO>> findByNameLike(@RequestParam(required = false) String name) {
         List<Student> list = studentService.findByNameLike(name);
-        return ResponseEntity.ok().body(list.stream()
-                .map((student) -> mapper.toDTO(student)).collect(Collectors.toList()));
+        return ResponseEntity.ok().body(list.stream().map(mapper::toDTO).toList());
     }
 }

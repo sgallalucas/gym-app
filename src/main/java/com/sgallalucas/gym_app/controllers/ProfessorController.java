@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
+import java.util.List;
 import java.util.UUID;
 
 @RestController
@@ -46,6 +47,12 @@ public class ProfessorController {
     public ResponseEntity<Void> delete(@PathVariable String id) {
         professorService.delete(UUID.fromString(id));
         return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("/name")
+    public ResponseEntity<List<ProfessorDTO>> findByNameLike(@RequestParam(required = false) String name) {
+        List<Professor> list = professorService.findByNameLike(name);
+        return ResponseEntity.ok().body(list.stream().map(mapper::toDTO).toList());
     }
 
 }

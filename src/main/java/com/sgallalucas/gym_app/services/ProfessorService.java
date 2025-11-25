@@ -6,6 +6,7 @@ import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -37,5 +38,9 @@ public class ProfessorService {
     public void delete(UUID id) {
         Professor professor = professorRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Professor not found"));
         professorRepository.delete(professor);
+    }
+
+    public List<Professor> findByNameLike(String name) {
+        return professorRepository.findByNameContainingIgnoreCase(name);
     }
 }
