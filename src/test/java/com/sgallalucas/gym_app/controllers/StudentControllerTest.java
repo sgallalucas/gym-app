@@ -17,13 +17,16 @@ import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.time.LocalDate;
+import java.util.Arrays;
+import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
+import static org.hamcrest.Matchers.hasSize;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @WebMvcTest(StudentController.class)
 public class StudentControllerTest {
@@ -42,6 +45,7 @@ public class StudentControllerTest {
 
     StudentDTO studentDTO, invalidStudentDTO, updatedDTO;
     Student student, invalidStudent, updated;
+    List<Student> list, filteredList;
 
     @BeforeEach
     void setUp() {
@@ -51,6 +55,7 @@ public class StudentControllerTest {
         student = new Student(studentDTO.id(), "Lucas", "lucas@gmail.com", LocalDate.of(2002, 4, 26), "Male");
         invalidStudent = new Student();
         updated = new Student(updatedDTO.id(), "Jorge", "jorge@gmail.com", LocalDate.of(2000, 2, 2), "Male");
+        list = Arrays.asList(student, updated);
     }
 
     @Test
@@ -200,8 +205,37 @@ public class StudentControllerTest {
     }
 
     @Test
-    @DisplayName("Buscar aluno(s) por nome")
+    @DisplayName("Buscar aluno(s) por nome existente")
     void findByNameLike_ReturnOk() throws Exception {
+        filteredList = list.stream().filter((student) -> student.getName().matches("L.*")).collect(Collectors.toList());
 
+        when(studentService.findByNameLike(any())).thenReturn(filteredList);
+
+        mockMvc
+                .perform(get("/students/name?name=lucas"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$", hasSize(1)));
+    }
+
+    @Test
+    @DisplayName("Buscar aluno(s) por nome inexistente")
+    void findByNameLike_ReturnEmpty() throws Exception {
+        when(studentService.findByNameLike(any())).thenReturn(List.of());
+
+        mockMvc
+                .perform(get("/students/name?name=lucas"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$", hasSize(0)));
+    }
+
+    @Test
+    @DisplayName("Buscar aluno(s) por nome sem especificar")
+    void findByNameLike_ReturnAll() throws Exception {
+        when(studentService.findByNameLike("")).thenReturn(list);
+
+        mockMvc
+                .perform(get("/students/name?name="))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$", hasSize(2)));
     }
 }
