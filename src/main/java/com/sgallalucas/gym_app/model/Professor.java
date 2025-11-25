@@ -37,6 +37,7 @@ public class Professor {
     @NotBlank
     private String genre;
 
+    @NotNull
     private Specialty specialty;
 
     @CreatedDate
