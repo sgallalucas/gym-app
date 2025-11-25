@@ -9,5 +9,4 @@ import org.springframework.stereotype.Service;
 public class ProfessorService {
 
     private final ProfessorRepository professorRepository;
-
 }
