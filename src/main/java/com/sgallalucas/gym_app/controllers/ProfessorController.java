@@ -35,4 +35,11 @@ public class ProfessorController {
         return ResponseEntity.ok().body(dto);
     }
 
+    @PutMapping("/{id}")
+    public ResponseEntity<Void> update(@PathVariable String id, @RequestBody ProfessorDTO dto) {
+        Professor professor = mapper.toEntity(dto);
+        professorService.update(UUID.fromString(id), professor);
+        return ResponseEntity.noContent().build();
+    }
+
 }

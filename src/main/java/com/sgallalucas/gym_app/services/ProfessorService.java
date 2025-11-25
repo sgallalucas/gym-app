@@ -21,4 +21,16 @@ public class ProfessorService {
     public Professor findById(UUID id) {
         return professorRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Professor not found"));
     }
+
+    public void update(UUID id, Professor updatedProfessor) {
+        Professor professor = professorRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Professor not found"));
+
+        professor.setName(updatedProfessor.getName());
+        professor.setEmail(updatedProfessor.getEmail());
+        professor.setBirthDate(updatedProfessor.getBirthDate());
+        professor.setGenre(updatedProfessor.getGenre());
+        professor.setSpecialty(updatedProfessor.getSpecialty());
+
+        professorRepository.save(professor);
+    }
 }
