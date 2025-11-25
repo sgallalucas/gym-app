@@ -38,6 +38,7 @@ public class Professor {
     private String genre;
 
     @NotNull
+    @Enumerated(EnumType.STRING)
     private Specialty specialty;
 
     @CreatedDate
