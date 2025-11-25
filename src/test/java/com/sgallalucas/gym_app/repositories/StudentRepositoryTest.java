@@ -124,7 +124,7 @@ public class StudentRepositoryTest {
     @DisplayName("Atualizar aluno inexistente")
     void update_UnexistingStudent_ThrowsException() {
         testEntityManager.persistAndFlush(student);
-        student.setId(UUID.fromString("43e1d0ff-89b7-4c83-8645-a126c9b103f"));
+        student.setId(UUID.randomUUID());
 
         studentRepository.save(student);
 

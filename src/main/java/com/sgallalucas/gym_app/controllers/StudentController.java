@@ -24,7 +24,7 @@ public class StudentController {
     private final StudentMapper mapper;
 
     @PostMapping
-    public ResponseEntity<StudentDTO> create(@RequestBody @Valid StudentDTO dto) {
+    public ResponseEntity<Void> create(@RequestBody @Valid StudentDTO dto) {
         Student student = mapper.toEntity(dto);
         studentService.create(student);
         URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/" + student.getId()).buildAndExpand().toUri();
