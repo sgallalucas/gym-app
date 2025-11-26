@@ -11,6 +11,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.Instant;
 import java.time.LocalDate;
+import java.util.List;
 import java.util.UUID;
 
 @Getter
@@ -22,25 +23,21 @@ public class Student {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
-
     @NotBlank
     private String name;
-
     @NotBlank
     @Column(unique = true)
     private String email;
-
     @NotNull
     private LocalDate birthDate;
-
     @NotBlank
     private String genre;
-
     @CreatedDate
     private Instant creationDate;
-
     @LastModifiedDate
     private Instant updateDate;
+    @OneToMany(mappedBy = "student")
+    private List<Workout> workoutList;
 
     public Student() {
     }
