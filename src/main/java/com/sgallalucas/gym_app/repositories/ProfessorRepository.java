@@ -8,4 +8,6 @@ import java.util.UUID;
 
 public interface ProfessorRepository extends JpaRepository<Professor, UUID> {
     List<Professor> findByNameContainingIgnoreCase(String name);
+
+    Professor findByEmail(String email);
 }
