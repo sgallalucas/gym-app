@@ -20,6 +20,7 @@ public class Workout {
     @NotBlank
     private String name;
     @NotNull
+    @Enumerated(EnumType.STRING)
     private WorkoutType type;
     @NotBlank
     private String description;
@@ -33,7 +34,7 @@ public class Workout {
     public Workout() {
     }
 
-    public Workout(UUID id, String name, WorkoutType type, String description, Student student, Professor professor) {
+    public Workout(UUID id, String name, String description, WorkoutType type, Student student, Professor professor) {
         this.id = id;
         this.name = name;
         this.type = type;

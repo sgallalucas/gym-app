@@ -9,4 +9,8 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class WorkoutService {
     private final WorkoutRepository workoutRepository;
+
+    public void create(Workout workout) {
+        workoutRepository.save(workout);
+    }
 }
